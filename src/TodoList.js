@@ -1,43 +1,52 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux'
 
+const TodoList = (props) => {
+  const renderList = (arr) => {
+    return arr.map((item, index) => {
+      return <li key={item + index}>{item}</li>
+    })
+  }
 
-class TodoList extends Component {
-
-
-  render() {
-    return (
+  let { list, inputValue, clickButton, inputChange } = props
+  return (
+    <div>
       <div>
-        <div>
-          <input
-            value={this.props.inputValue}
-            onChange={this.props.inputChange}
-          />
-          <button>提交</button>
-        </div>
-        <ul>
-          <li>jspange</li>
-        </ul>
+        <input
+          value={inputValue}
+          onChange={inputChange}
+        />
+        <button onClick={clickButton}>提交</button>
       </div>
-    );
-  }
+      <ul>
+        {renderList(list)}
+      </ul>
+    </div>
+  );
 }
-const stateToProps = (state) => {
+
+const mapStateToProps = (state) => {
   return {
-    inputValue: state.inputValue
+    inputValue: state.inputValue,
+    list: state.list
   }
 }
-const dispachToProps = (dispach) => {
+const mapDispachToProps = (dispach) => {
   return {
     inputChange(e) {
-      console.log(e.target.value)
       let action = {
         type: 'change_input',
         data: e.target.value
+      }
+      dispach(action)
+    },
+    clickButton() {
+      let action = {
+        type: 'add_todo',
       }
       dispach(action)
     }
   }
 }
 
-export default connect(stateToProps, dispachToProps)(TodoList);
+export default connect(mapStateToProps, mapDispachToProps)(TodoList);

@@ -12,10 +12,14 @@ export default (state = initState, action) => {
         ...newValue,
         inputValue: action.data
       }
-    //   break;
-  
+    
+    case 'add_todo':
+      let newValueObj = JSON.parse(JSON.stringify(state))
+      newValueObj.list.push(newValueObj.inputValue)
+      newValueObj.inputValue =''
+      console.log(newValueObj)
+      return newValueObj
     default:
       return state
-      break;
   }
 }
